@@ -36,20 +36,31 @@ class MainController extends AbstractController
 
     private function submit(SymfonyForm $form) : Response
     {
+        $this->rates_from_today=$this->set_data_for_rates_from_today();
         $client = HttpClient::create();
         $data_time=$form->getData()['data']->format('Y-m-d');
         $response = $client->request('GET', 'https://api.frankfurter.app/'.$data_time.'?base=PLN&symbols=EUR,USD,GBP,CZK');
-        $data=$this->set_data($response->toArray());
+        $this->datas_from_data_Indicated_date=$this->set_data($response->toArray(),$this->set_data_for_rates_from_today());
         return $this->render('main/submit.html.twig', [
-            'results'=>$data
+            'results'=>$this->datas_from_data_Indicated_date,
+            'date'   =>$data_time
         ]);
+    }
+
+    private function set_data_for_rates_from_today(){
+        $today = new \DateTime();
+        $data_time=$today->format('Y-m-d');
+        $client = HttpClient::create();
+        $response = $client->request('GET', 'https://api.frankfurter.app/'.$data_time.'?base=PLN&symbols=EUR,USD,GBP,CZK');
+        $data=$response->toArray();
+        return $data['rates'];
     }
 
     private function set_data(array $data) :array
     {
-        $return_data=[];
+        $set_data_for_rates_from_today=$this->set_data_for_rates_from_today();
         foreach($data['rates'] as $rate => $key){
-            $get_today_rate=$this->get_today_rate($key);
+            $get_today_rate=$this->get_today_rate($rate,$set_data_for_rates_from_today);
             $return_data[] = array(
                 "Currency"          => $rate, 
                 "Rate_from_today"   => $get_today_rate,
@@ -66,9 +77,9 @@ class MainController extends AbstractController
         return $difference*100/$today_rate;
     }
 
-    private function get_today_rate(string $key) :float
+    private function get_today_rate(string $key,array $today_rate) :float
     {
-        return 0.24948;
+        return $today_rate[$key];
     }
 
 }
