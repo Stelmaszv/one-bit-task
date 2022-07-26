@@ -50,7 +50,7 @@ class MainController extends AbstractController
         foreach($data['rates'] as $rate => $key){
             $get_today_rate=$this->get_today_rate($key);
             $return_data[] = array(
-                "Currency"          => $rate,
+                "Currency"          => $rate, 
                 "Rate_from_today"   => $get_today_rate,
                 "Indicated_date"    => $key,
                 "Percentage_change" => $this->get_percentage_change($get_today_rate,$key)
@@ -60,13 +60,13 @@ class MainController extends AbstractController
     }
     private function get_percentage_change(float $today_rate,float $rate):int
     {
-        return 1;
+        $difference= $today_rate-$rate;
+        return $difference*100/$today_rate;
     }
 
     private function get_today_rate(string $key) :float
     {
-        return -123456.789;
+        return 0.24948;
     }
-
 
 }
