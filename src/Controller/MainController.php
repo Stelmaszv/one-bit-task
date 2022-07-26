@@ -27,6 +27,12 @@ class MainController extends AbstractController
         }
     }
 
+    private function get_data_from_api(string $data_time){
+        $client = HttpClient::create();
+        $response = $client->request('GET', 'https://api.frankfurter.app/'.$data_time.'?base=PLN&symbols=EUR,USD,GBP,CZK');
+        return $response->toArray();
+    }
+
     private function no_submit(SymfonyForm $form) : Response
     {
         return $this->render('main/nosubmit.html.twig', [
@@ -35,14 +41,11 @@ class MainController extends AbstractController
     }
 
     private function submit(SymfonyForm $form) : Response
-    {
-        $this->rates_from_today=$this->set_data_for_rates_from_today();
-        $client = HttpClient::create();
+    {        
         $data_time=$form->getData()['data']->format('Y-m-d');
-        $response = $client->request('GET', 'https://api.frankfurter.app/'.$data_time.'?base=PLN&symbols=EUR,USD,GBP,CZK');
-        $this->datas_from_data_Indicated_date=$this->set_data($response->toArray(),$this->set_data_for_rates_from_today());
+        $results=$this->set_data($this->get_data_from_api($data_time));
         return $this->render('main/submit.html.twig', [
-            'results'=>$this->datas_from_data_Indicated_date,
+            'results'=>$results,
             'date'   =>$data_time
         ]);
     }
@@ -50,9 +53,7 @@ class MainController extends AbstractController
     private function set_data_for_rates_from_today(){
         $today = new \DateTime();
         $data_time=$today->format('Y-m-d');
-        $client = HttpClient::create();
-        $response = $client->request('GET', 'https://api.frankfurter.app/'.$data_time.'?base=PLN&symbols=EUR,USD,GBP,CZK');
-        $data=$response->toArray();
+        $data=$this->get_data_from_api($data_time);
         return $data['rates'];
     }
 

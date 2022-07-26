@@ -10,8 +10,11 @@ class Form extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('data',DateType::class)
-        ->add('save',SubmitType::class)
-    ;
+        ->add('data',DateType::class,[
+            'years'    => range(date('Y')-22, date('Y')),
+            'label'    => 'Podaj Date',
+            'required' => true
+        ])
+        ->add('save',SubmitType::class,['label' => 'Pokaż']);
     }
 }
