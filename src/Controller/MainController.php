@@ -15,6 +15,7 @@ class MainController extends AbstractController
     /**
      * @Route("/main", name="app_main")
     */
+
     public function index(Request $request): Response
     {
         $form = $this->createForm(Form::class, null);
@@ -60,13 +61,13 @@ class MainController extends AbstractController
     private function set_data(array $data) :array
     {
         $set_data_for_rates_from_today=$this->set_data_for_rates_from_today();
-        foreach($data['rates'] as $rate => $key){
-            $get_today_rate=$this->get_today_rate($rate,$set_data_for_rates_from_today);
+        foreach($data['rates'] as $key=> $rate){
+            $get_today_rate=$this->get_today_rate($key,$set_data_for_rates_from_today);
             $return_data[] = array(
-                "Currency"          => $rate, 
+                "Currency"          => $key, 
                 "Rate_from_today"   => $get_today_rate,
-                "Indicated_date"    => $key,
-                "Percentage_change" => $this->get_percentage_change($get_today_rate,$key)
+                "Indicated_date"    => $rate,
+                "Percentage_change" => $this->get_percentage_change($get_today_rate,$rate)
             );
         }
         return $return_data;
