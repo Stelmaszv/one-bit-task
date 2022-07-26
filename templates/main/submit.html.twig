@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Wybrana Data - {{date}}</h1>
-    <table>
+    <table class="table">
         <tr>
             <th>Waluta</th>
             <th>Kurs z dziś</th>
@@ -16,7 +16,11 @@
             <td>{{result.Currency}}</td>
             <td>{{result.Rate_from_today}}</td>
             <td>{{result.Indicated_date}}</td>
-            <td>{{result.Percentage_change}}</td>
+            {% if result.Percentage_change > 0 %}
+                <td style="color:green">{{result.Percentage_change}}</td>
+            {% else %}
+                <td style="color:red">{{result.Percentage_change}}</td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

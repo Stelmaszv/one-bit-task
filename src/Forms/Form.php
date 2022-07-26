@@ -12,9 +12,17 @@ class Form extends AbstractType
         $builder
         ->add('data',DateType::class,[
             'years'    => range(date('Y')-22, date('Y')),
-            'label'    => 'Podaj Date',
-            'required' => true
+            'label'    => FALSE,
+            'required' => true,
+            'attr'  => [
+                'class' =>'form-control form-control-lg'
+            ]
         ])
-        ->add('save',SubmitType::class,['label' => 'Pokaż']);
+        ->add('save',SubmitType::class,[
+            'label' => 'Pokaż',
+            'attr'  => [
+                'class' =>'btn btn-primary'
+            ]
+        ]);
     }
 }
