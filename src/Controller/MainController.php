@@ -14,7 +14,7 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/main", name="app_main")
-     */
+    */
     public function index(Request $request): Response
     {
         $form = $this->createForm(Form::class, null);
@@ -37,7 +37,8 @@ class MainController extends AbstractController
     private function submit(SymfonyForm $form) : Response
     {
         $client = HttpClient::create();
-        $response = $client->request('GET', 'https://api.frankfurter.app/2022-01-11?base=PLN&symbols=EUR,USD,GBP,CZK');
+        $data_time=$form->getData()['data']->format('Y-m-d');
+        $response = $client->request('GET', 'https://api.frankfurter.app/'.$data_time.'?base=PLN&symbols=EUR,USD,GBP,CZK');
         $data=$this->set_data($response->toArray());
         return $this->render('main/submit.html.twig', [
             'results'=>$data
@@ -58,6 +59,7 @@ class MainController extends AbstractController
         }
         return $return_data;
     }
+
     private function get_percentage_change(float $today_rate,float $rate):int
     {
         $difference= $today_rate-$rate;
