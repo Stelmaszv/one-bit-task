@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,7 +50,8 @@ class MainController extends AbstractController
         ]);
     }
 
-    private function set_data_for_rates_from_today(){
+    private function set_data_for_rates_from_today():array
+    {
         $today = new \DateTime();
         $data_time=$today->format('Y-m-d');
         $data=$this->get_data_from_api($data_time);
@@ -73,7 +73,7 @@ class MainController extends AbstractController
         return $return_data;
     }
 
-    private function get_percentage_change(float $today_rate,float $rate):int
+    private function get_percentage_change(float $today_rate,float $rate) :int
     {
         $difference= $today_rate-$rate;
         return $difference*100/$today_rate;
