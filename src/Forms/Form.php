@@ -11,11 +11,7 @@ class Form extends AbstractType
     {
         $builder
         ->add('data',DateType::class)
-        ->add('save',SubmitType::class,[
-            'attr'=>[
-                'class' =>'btn btn-primary float-right'
-            ]
-        ])
+        ->add('save',SubmitType::class)
     ;
     }
 }
