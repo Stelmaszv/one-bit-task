@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kurs Waluty{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Waluta</th>
+            <th>Kurs z dziś</th>
+            <th>Kurs ze wskazanej daty</th>
+            <th>Zmiana procentowa</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{result.Currency}}</td>
+            <td>{{result.Rate_from_today}}</td>
+            <td>{{result.Indicated_date}}</td>
+            <td>{{result.Percentage_change}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
