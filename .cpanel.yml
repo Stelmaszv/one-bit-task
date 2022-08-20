@@ -1,6 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/videocol/
-    - /bin/cp -R /home/videocol/repo/public_html $DEPLOYPATH
-    - /bin/cp -R /home/videocol/repo/lib $DEPLOYPATH
+    - export DEPLOYPATH=/home/videocol/public_html/one-bit-task
+    - /bin/cp * $DEPLOYPATH
